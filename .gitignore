@@ -1,0 +1,9 @@
+*.pyc
+.DS_Store
+bin/
+lib/
+share/
+local_settings.py
+build/
+include/
+.Python
