@@ -7,6 +7,7 @@ class Article(models.Model):
         return self.title
         
     title = models.CharField(max_length=255)
+    creator = models.ForeignKey('auth.User', related_name='articles')
 
 class Annotation(models.Model):
     def __unicode__(self):

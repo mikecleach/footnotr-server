@@ -1,9 +1,42 @@
 import json
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from articles.models import Article, Annotation, Comment
 import logging
 from django.views.decorators.csrf import csrf_exempt
-# Create your views here.
+from django.contrib.auth.models import User
+
+from articles.models import Article
+from articles.serializers import ArticleSerializer, UserSerializer
+from articles.permissions import IsCreatorOrReadOnly
+from rest_framework import generics, permissions
+
+
+class ArticleList(generics.ListCreateAPIView):
+    model = Article
+    serializer_class = ArticleSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    
+    def pre_save(self, obj):
+        obj.creator = self.request.user
+    
+
+class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = Article
+    serializer_class = ArticleSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly,) 
+     
+    def pre_save(self, obj):
+        obj.creator = self.request.user  
+
+class UserList(generics.ListAPIView):
+    model = User
+    serializer_class = UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    model = User
+    serializer_class = UserSerializer  
+
+
 @csrf_exempt    
 def article(request, article_id):
     logger = logging.getLogger()
