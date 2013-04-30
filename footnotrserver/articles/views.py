@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 from articles.models import Article
-from articles.serializers import ArticleSerializer, UserSerializer
+from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, CommentSerializer
 from articles.permissions import IsCreatorOrReadOnly
 from rest_framework import generics, permissions
 
@@ -27,6 +27,30 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
      
     def pre_save(self, obj):
         obj.creator = self.request.user  
+    
+class AnnotationList(generics.ListCreateAPIView):
+    model = Annotation
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class AnnotationDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = Annotation
+    serializer_class = AnnotationSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
+
+class CommentList(generics.ListCreateAPIView):
+    model = Comment
+    serializer_class = CommentSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = Comment
+    serializer_class = CommentSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
+
+
 
 class UserList(generics.ListAPIView):
     model = User
