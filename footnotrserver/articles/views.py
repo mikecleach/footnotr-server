@@ -1,12 +1,11 @@
 import json
 from django.http import Http404, HttpResponse
-from articles.models import Article, Annotation, Comment
+from articles.models import Article, Annotation, Comment, Vote
 import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
-from articles.models import Article
-from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, CommentSerializer
+from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, CommentSerializer, VoteSerializer
 from articles.permissions import IsCreatorOrReadOnly
 from rest_framework import generics, permissions
 
@@ -50,6 +49,17 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
 
+
+class VoteList(generics.ListCreateAPIView):
+    model = Vote
+    serializer_class = VoteSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+
+class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
+    model = Vote
+    serializer_class = VoteSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
 
 
 class UserList(generics.ListAPIView):

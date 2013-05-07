@@ -26,5 +26,9 @@ class Comment(models.Model):
     annotation = models.ForeignKey(Annotation, related_name='comments')
     user = models.ForeignKey(User)
     comment = models.TextField()
-    votes = models.IntegerField(default=0)
 
+
+class Vote(models.Model):
+    comment = models.ForeignKey(Comment, related_name='votes')
+    user = models.ForeignKey(User)
+    

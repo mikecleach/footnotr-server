@@ -12,6 +12,8 @@ urlpatterns = patterns('articles.views',
     url(r'^annotations/(?P<pk>[0-9]+)/$', views.AnnotationDetail.as_view(), name='annotation-detail'),
     url(r'^comments/$', views.CommentList.as_view(), name='comment-list'),
     url(r'^comments/(?P<pk>[0-9]+)/$', views.CommentDetail.as_view(), name='comment-detail'),
+    url(r'^votes/$', views.VoteList.as_view(), name='vote-list'),
+    url(r'^votes/(?P<pk>[0-9]+)/$', views.VoteDetail.as_view(), name='vote-detail'),
     url(r'^users/$', views.UserList.as_view()),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
     #this is for access to old api, until new one is completed

@@ -1,7 +1,7 @@
 from django.forms import widgets
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from articles.models import Article, Annotation, Comment
+from articles.models import Article, Annotation, Comment, Vote
 
 class UserSerializer(serializers.ModelSerializer):
     articles = serializers.PrimaryKeyRelatedField(many=True)
@@ -11,10 +11,19 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'articles')
 
 
+class VoteSerializer(serializers.HyperlinkedModelSerializer):
+    pk = serializers.Field()
+    user = serializers.Field(source='user.username')
+
+    class Meta:
+        model = Comment
+        fields = ('url', 'user')
+
+
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()
     comment = serializers.CharField()
-    votes = serializers.IntegerField()
+    votes = VoteSerializer(source='votes')
     user = serializers.Field(source='user.username')
     
     class Meta:
