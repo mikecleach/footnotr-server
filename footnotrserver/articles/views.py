@@ -9,11 +9,11 @@ from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSe
 from articles.permissions import IsCreatorOrReadOnly
 from rest_framework import generics, permissions
 
-
+#FIXME: Remove always True from IsCreatorOrReadOnly, add proper permissions back
 class ArticleList(generics.ListCreateAPIView):
     model = Article
     serializer_class = ArticleSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = ( IsCreatorOrReadOnly, )
     
     def pre_save(self, obj):
         obj.creator = self.request.user
@@ -22,7 +22,7 @@ class ArticleList(generics.ListCreateAPIView):
 class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Article
     serializer_class = ArticleSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsCreatorOrReadOnly,) 
+    permission_classes = ( IsCreatorOrReadOnly,) 
      
     def pre_save(self, obj):
         obj.creator = self.request.user  
@@ -30,36 +30,47 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
 class AnnotationList(generics.ListCreateAPIView):
     model = Annotation
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class AnnotationDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Annotation
     serializer_class = AnnotationSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
+    permission_classes = ( IsCreatorOrReadOnly,) 
 
 class CommentList(generics.ListCreateAPIView):
     model = Comment
     serializer_class = CommentSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Comment
     serializer_class = CommentSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
+    permission_classes = ( IsCreatorOrReadOnly,) 
 
 
 class VoteList(generics.ListCreateAPIView):
     model = Vote
     serializer_class = VoteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = ( IsCreatorOrReadOnly,)
+    
+    def post(self, request, *args, **kwargs):
+        #import pdb; pdb.set_trace()
+        return self.create(request, *args, **kwargs)
+    
+    def pre_save(self,obj):
+        pass
+        #import pdb; pdb.set_trace()
+        #pass
+    
 
 
-class VoteDetail(generics.RetrieveUpdateDestroyAPIView):
+class VoteDetail(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
     model = Vote
     serializer_class = VoteSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,) 
+    permission_classes = ( IsCreatorOrReadOnly,) 
+      
 
 
 class UserList(generics.ListAPIView):

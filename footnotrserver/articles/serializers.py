@@ -4,31 +4,30 @@ from rest_framework import serializers
 from articles.models import Article, Annotation, Comment, Vote
 
 class UserSerializer(serializers.ModelSerializer):
-    articles = serializers.PrimaryKeyRelatedField(many=True)
+    #articles = serializers.PrimaryKeyRelatedField(many=True)
+    pk = serializers.Field()
     
     class Meta:
         model = User
-        fields = ('id', 'username', 'articles')
+        fields = ('pk', 'username')
 
 
-class VoteSerializer(serializers.HyperlinkedModelSerializer):
+class VoteSerializer(serializers.ModelSerializer):
     pk = serializers.Field()
-    user = serializers.Field(source='user.username')
-
+    username = serializers.Field(source='user.username')
+    
     class Meta:
-        model = Comment
-        fields = ('url', 'user')
+        model = Vote
+        fields = ( 'user', 'comment', 'pk', 'username')
+        #depth = 1
 
 
-class CommentSerializer(serializers.HyperlinkedModelSerializer):
+class CommentSerializer(serializers.ModelSerializer):
     pk = serializers.Field()
-    comment = serializers.CharField()
-    votes = VoteSerializer(source='votes')
-    user = serializers.Field(source='user.username')
     
     class Meta:
         model = Comment
-        fields = ('comment', 'votes','url', 'user')
+        fields = ('comment', 'votes', 'user', 'pk')
 
 class AnnotationSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()

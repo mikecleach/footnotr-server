@@ -29,6 +29,11 @@ class Comment(models.Model):
 
 
 class Vote(models.Model):
+    def __unicode__(self):
+        #import pdb; pdb.set_trace()
+        string = str(self.comment) + "  " + str(self.user)
+        return string
+    
     comment = models.ForeignKey(Comment, related_name='votes')
     user = models.ForeignKey(User)
     
