@@ -4,6 +4,7 @@ from articles import views
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
+    
 
 urlpatterns = patterns('articles.views',
     url(r'^articles/$', views.ArticleList.as_view(), name='article-list'),
@@ -13,9 +14,10 @@ urlpatterns = patterns('articles.views',
     url(r'^comments/$', views.CommentList.as_view(), name='comment-list'),
     url(r'^comments/(?P<pk>[0-9]+)/$', views.CommentDetail.as_view(), name='comment-detail'),
     url(r'^votes/$', views.VoteList.as_view(), name='vote-list'),
+    url(r'^votes/new$', views.VoteAdd.as_view(), name='vote-add'),
     url(r'^votes/(?P<pk>[0-9]+)/$', views.VoteDetail.as_view(), name='vote-detail'),
-    url(r'^users/$', views.UserList.as_view()),
-    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
+    url(r'^users/$', views.UserList.as_view(), name='user-list'),
+    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(),name='user-detail'),
     #this is for access to old api, until new one is completed
     url(r'^oldarticles/(?P<article_id>\d+)/$', views.article, name='article'),   
     #url(r'^articles/$', views.ArticleList.as_view(), name='articlelist'),

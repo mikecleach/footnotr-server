@@ -5,7 +5,7 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
-from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, CommentSerializer, VoteSerializer
+from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, CommentSerializer, VoteSerializer, WritableVoteSerializer
 from articles.permissions import IsCreatorOrReadOnly
 from rest_framework import generics, permissions
 
@@ -38,7 +38,7 @@ class AnnotationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AnnotationSerializer
     permission_classes = ( IsCreatorOrReadOnly,) 
 
-class CommentList(generics.ListCreateAPIView):
+class CommentList(generics.ListAPIView):
     model = Comment
     serializer_class = CommentSerializer
     permission_classes = ( IsCreatorOrReadOnly,)
@@ -50,7 +50,7 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = ( IsCreatorOrReadOnly,) 
 
 
-class VoteList(generics.ListCreateAPIView):
+class VoteList(generics.ListAPIView):
     model = Vote
     serializer_class = VoteSerializer
     permission_classes = ( IsCreatorOrReadOnly,)
@@ -64,6 +64,11 @@ class VoteList(generics.ListCreateAPIView):
         #import pdb; pdb.set_trace()
         #pass
     
+
+class VoteAdd(generics.CreateAPIView):
+    model = Vote
+    serializer_class = WritableVoteSerializer
+    permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class VoteDetail(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):

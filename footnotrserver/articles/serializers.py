@@ -12,22 +12,42 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('pk', 'username')
 
 
-class VoteSerializer(serializers.ModelSerializer):
+class WritableVoteSerializer(serializers.ModelSerializer):
     pk = serializers.Field()
     username = serializers.Field(source='user.username')
-    
+
     class Meta:
         model = Vote
         fields = ( 'user', 'comment', 'pk', 'username')
         #depth = 1
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class VoteSerializer(serializers.HyperlinkedModelSerializer):
+    pk = serializers.Field()
+    user = UserSerializer(source='user')
+    username = serializers.Field(source='user.username')
+    
+    class Meta:
+        model = Vote
+        fields = ('user', 'pk', 'username')
+        #depth = 1
+
+
+class WritableCommentSerializer(serializers.ModelSerializer):
     pk = serializers.Field()
     
     class Meta:
         model = Comment
         fields = ('comment', 'votes', 'user', 'pk')
+        
+class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    pk = serializers.Field()
+    votes = VoteSerializer()
+    username = serializers.Field(source='user.username')
+
+    class Meta:
+        model = Comment
+        fields = ('comment', 'votes', 'username', 'pk')#) 'user', 'pk')        
 
 class AnnotationSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()
@@ -53,7 +73,7 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Article
         #fields = ('creator', 'title', 'annots')
-        
+        #depth = 3
     
 
   
