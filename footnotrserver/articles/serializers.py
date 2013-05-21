@@ -35,10 +35,11 @@ class VoteSerializer(serializers.HyperlinkedModelSerializer):
 
 class WritableCommentSerializer(serializers.ModelSerializer):
     pk = serializers.Field()
+    username = serializers.Field(source='user.username')
     
     class Meta:
         model = Comment
-        fields = ('comment', 'votes', 'user', 'pk')
+        fields = ('comment', 'votes', 'user', 'pk', 'annotation', 'username')
         
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()
