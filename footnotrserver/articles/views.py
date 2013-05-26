@@ -5,7 +5,7 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
-from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, CommentSerializer, VoteSerializer, WritableVoteSerializer, WritableCommentSerializer
+from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, WritableAnnotationSerializer, CommentSerializer, VoteSerializer, WritableVoteSerializer, WritableCommentSerializer
 from articles.permissions import IsCreatorOrReadOnly
 from rest_framework import generics, permissions
 
@@ -30,6 +30,11 @@ class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
 class AnnotationList(generics.ListCreateAPIView):
     model = Annotation
     serializer_class = AnnotationSerializer
+    permission_classes = ( IsCreatorOrReadOnly,)
+
+class AnnotationAdd(generics.CreateAPIView):
+    model = Annotation
+    serializer_class = WritableAnnotationSerializer
     permission_classes = ( IsCreatorOrReadOnly,)
 
 

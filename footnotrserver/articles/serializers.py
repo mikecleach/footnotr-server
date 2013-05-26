@@ -39,7 +39,7 @@ class WritableCommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Comment
-        fields = ('comment', 'votes', 'user', 'pk', 'annotation', 'username')
+        fields = ('comment', 'votes', 'user', 'pk', 'annotation', 'username', 'created')
         
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()
@@ -48,17 +48,28 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('comment', 'votes', 'username', 'pk')#) 'user', 'pk')        
+        fields = ('comment', 'votes', 'username', 'pk', 'created')#) 'user', 'pk')        
+
+
+class WritableAnnotationSerializer(serializers.ModelSerializer):
+    pk = serializers.Field()
+    username = serializers.Field(source='user.username')
+
+    class Meta:
+        model = Annotation
+        fields = ('pk', 'pdfLibID', 'xml', 'article', 'comments', 'user', 'username')
+
 
 class AnnotationSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()
     pdfLibID = serializers.IntegerField()
     xml = serializers.CharField()
     comments = CommentSerializer(source='comments')
+    username = serializers.Field(source='user.username')
     
     class Meta:
         model = Annotation
-        #fields = ('pdfLibID', 'xml','url')
+        fields = ('pdfLibID', 'xml', 'pk', 'comments', 'username')
     
 
 

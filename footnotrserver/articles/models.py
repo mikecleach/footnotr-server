@@ -15,6 +15,7 @@ class Annotation(models.Model):
         return string
     
     article = models.ForeignKey(Article, related_name='annots')
+    user = models.ForeignKey(User)
     pdfLibID = models.IntegerField()
     xml = models.TextField()
 
@@ -26,6 +27,7 @@ class Comment(models.Model):
     annotation = models.ForeignKey(Annotation, related_name='comments')
     user = models.ForeignKey(User)
     comment = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
 
 
 class Vote(models.Model):
