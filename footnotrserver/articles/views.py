@@ -5,7 +5,7 @@ import logging
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
-from articles.serializers import ArticleSerializer, UserSerializer, AnnotationSerializer, WritableAnnotationSerializer, CommentSerializer, VoteSerializer, WritableVoteSerializer, WritableCommentSerializer
+from articles.serializers import ArticleSerializer, WritableArticleSerializer, UserSerializer, AnnotationSerializer, WritableAnnotationSerializer, CommentSerializer, VoteSerializer, WritableVoteSerializer, WritableCommentSerializer
 from articles.permissions import IsCreatorOrReadOnly
 from rest_framework import generics, permissions
 
@@ -19,10 +19,17 @@ class ArticleList(generics.ListCreateAPIView):
         obj.creator = self.request.user
     
 
+class ArticleAdd(generics.CreateAPIView):
+    model = Article
+    serializer_class = WritableArticleSerializer
+    permission_classes = ( IsCreatorOrReadOnly,)
+
+
 class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Article
     serializer_class = ArticleSerializer
-    permission_classes = ( IsCreatorOrReadOnly,) 
+    permission_classes = ( IsCreatorOrReadOnly,)
+    lookup_field = ('guid') 
      
     def pre_save(self, obj):
         obj.creator = self.request.user  

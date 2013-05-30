@@ -8,6 +8,7 @@ class Article(models.Model):
         
     title = models.CharField(max_length=255)
     creator = models.ForeignKey('auth.User', related_name='articles')
+    guid = models.CharField(max_length=32, unique=True)
 
 class Annotation(models.Model):
     def __unicode__(self):

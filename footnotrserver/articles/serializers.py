@@ -73,7 +73,16 @@ class AnnotationSerializer(serializers.HyperlinkedModelSerializer):
     
 
 
-class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+class WritableArticleSerializer(serializers.ModelSerializer):
+    pk = serializers.Field()
+    username = serializers.Field(source='creator.username')
+    
+    class Meta:
+        model = Article
+        fields = ('pk', 'title', 'creator', 'guid', 'username')
+
+
+class ArticleSerializer(serializers.ModelSerializer):
     pk = serializers.Field()  # Note: `Field` is an untyped read-only field.
     title = serializers.CharField(max_length=255)
     creator = serializers.Field(source='creator.username')

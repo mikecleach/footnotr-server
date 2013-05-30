@@ -8,7 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('articles.views',
     url(r'^articles/$', views.ArticleList.as_view(), name='article-list'),
-    url(r'^articles/(?P<pk>[0-9]+)/$', views.ArticleDetail.as_view(), name='article-detail'),
+    url(r'^articles/new$', views.ArticleAdd.as_view(), name='article-add'),
+    url(r'^articles/(?P<guid>[A-Za-z0-9]+)/$', views.ArticleDetail.as_view(), name='article-detail'),
     url(r'^annotations/$', views.AnnotationList.as_view(), name='annotation-list'),
     url(r'^annotations/new$', views.AnnotationAdd.as_view(), name='annotation-add'),
     url(r'^annotations/(?P<pk>[0-9]+)/$', views.AnnotationDetail.as_view(), name='annotation-detail'),
