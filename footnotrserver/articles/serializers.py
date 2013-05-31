@@ -79,7 +79,7 @@ class WritableArticleSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
-        fields = ('pk', 'title', 'creator', 'guid', 'username')
+        fields = ('pk', 'title', 'creator', 'guid', 'username', 'annots')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
