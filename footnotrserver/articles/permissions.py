@@ -6,8 +6,6 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        #FIXME:Allow all operations while debugging
-        return True
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
         if request.method in permissions.SAFE_METHODS:            
@@ -16,3 +14,18 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
         # Write permissions are only allowed to the owner of the articles,annotations,comments,votes
         return obj.creator == request.user
     
+
+class IsUserOwnedOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow creators of an object to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:            
+            return True
+
+        # Write permissions are only allowed to the owner of the articles,annotations,comments,votes
+        #import ipdb; ipdb.set_trace()
+        return obj.user == request.user

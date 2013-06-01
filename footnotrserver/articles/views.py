@@ -6,92 +6,92 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 
 from articles.serializers import ArticleSerializer, WritableArticleSerializer, UserSerializer, AnnotationSerializer, WritableAnnotationSerializer, CommentSerializer, VoteSerializer, WritableVoteSerializer, WritableCommentSerializer
-from articles.permissions import IsCreatorOrReadOnly
+from articles.permissions import IsCreatorOrReadOnly, IsUserOwnedOrReadOnly
 from rest_framework import generics, permissions
 
 #FIXME: Remove always True from IsCreatorOrReadOnly, add proper permissions back
-class ArticleList(generics.ListCreateAPIView):
+class ArticleList(generics.ListAPIView):
     model = Article
     serializer_class = ArticleSerializer
-    permission_classes = ( IsCreatorOrReadOnly, )
+    #permission_classes = ( IsCreatorOrReadOnly, )
     
-    def pre_save(self, obj):
-        obj.creator = self.request.user
+    #def pre_save(self, obj):
+        #obj.creator = self.request.user
     
 
 class ArticleAdd(generics.CreateAPIView):
     model = Article
     serializer_class = WritableArticleSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class ArticleDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Article
     serializer_class = ArticleSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    permission_classes = ( IsUserOwnedOrReadOnly,)
     lookup_field = ('guid') 
      
-    def pre_save(self, obj):
-        obj.creator = self.request.user  
+    #def pre_save(self, obj):
+        #obj.creator = self.request.user  
     
 class AnnotationList(generics.ListCreateAPIView):
     model = Annotation
     serializer_class = AnnotationSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
 
 class AnnotationAdd(generics.CreateAPIView):
     model = Annotation
     serializer_class = WritableAnnotationSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class AnnotationDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Annotation
     serializer_class = AnnotationSerializer
-    permission_classes = ( IsCreatorOrReadOnly,) 
+    permission_classes = ( IsUserOwnedOrReadOnly,) 
 
 class CommentList(generics.ListAPIView):
     model = Comment
     serializer_class = CommentSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
 
 class CommentAdd(generics.CreateAPIView):
     model = Comment
     serializer_class = WritableCommentSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     model = Comment
     serializer_class = CommentSerializer
-    permission_classes = ( IsCreatorOrReadOnly,) 
+    permission_classes = ( IsUserOwnedOrReadOnly,) 
 
 
 class VoteList(generics.ListAPIView):
     model = Vote
     serializer_class = VoteSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
     
-    def post(self, request, *args, **kwargs):
-        #import pdb; pdb.set_trace()
-        return self.create(request, *args, **kwargs)
-    
-    def pre_save(self,obj):
-        pass
-        #import pdb; pdb.set_trace()
-        #pass
+    # def post(self, request, *args, **kwargs):
+    #     #import pdb; pdb.set_trace()
+    #     return self.create(request, *args, **kwargs)
+    # 
+    # def pre_save(self,obj):
+    #     pass
+    #     #import pdb; pdb.set_trace()
+    #     #pass
     
 
 class VoteAdd(generics.CreateAPIView):
     model = Vote
     serializer_class = WritableVoteSerializer
-    permission_classes = ( IsCreatorOrReadOnly,)
+    #permission_classes = ( IsCreatorOrReadOnly,)
 
 
 class VoteDetail(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
     model = Vote
     serializer_class = VoteSerializer
-    permission_classes = ( IsCreatorOrReadOnly,) 
+    permission_classes = ( IsUserOwnedOrReadOnly,) 
       
 
 
