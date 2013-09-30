@@ -45,6 +45,7 @@ class CommentSerializer(serializers.HyperlinkedModelSerializer):
     pk = serializers.Field()
     votes = VoteSerializer()
     username = serializers.Field(source='user.username')
+    #created = serializers.DateTimeField()
 
     class Meta:
         model = Comment
@@ -66,10 +67,12 @@ class AnnotationSerializer(serializers.HyperlinkedModelSerializer):
     xml = serializers.CharField()
     comments = CommentSerializer(source='comments')
     username = serializers.Field(source='user.username')
+    article = serializers.Field(source='article.title')
     
     class Meta:
         model = Annotation
-        fields = ('pdfLibID', 'xml', 'pk', 'comments', 'username')
+        fields = ('pdfLibID', 'xml', 'pk', 'comments', 'username', 'article')
+        depth = 0
     
 
 

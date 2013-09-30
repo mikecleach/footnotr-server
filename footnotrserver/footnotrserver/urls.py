@@ -14,7 +14,7 @@ urlpatterns = patterns('articles.views',
     url(r'^annotations/new$', views.AnnotationAdd.as_view(), name='annotation-add'),
     url(r'^annotations/(?P<pk>[0-9]+)/$', views.AnnotationDetail.as_view(), name='annotation-detail'),
     url(r'^comments/$', views.CommentList.as_view(), name='comment-list'),
-        url(r'^comments/new$', views.CommentAdd.as_view(), name='comment-add'),
+    url(r'^comments/new$', views.CommentAdd.as_view(), name='comment-add'),
     url(r'^comments/(?P<pk>[0-9]+)/$', views.CommentDetail.as_view(), name='comment-detail'),
     url(r'^votes/$', views.VoteList.as_view(), name='vote-list'),
     url(r'^votes/new$', views.VoteAdd.as_view(), name='vote-add'),
@@ -22,7 +22,12 @@ urlpatterns = patterns('articles.views',
     url(r'^users/$', views.UserList.as_view(), name='user-list'),
     url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(),name='user-detail'),
     #this is for access to old api, until new one is completed
-    url(r'^oldarticles/(?P<article_id>\d+)/$', views.article, name='article'),   
+    url(r'^oldarticles/(?P<article_id>\d+)/$', views.article, name='article'),
+
+    url(r'^user-comments/(?P<pk>[0-9]+)/$', views.user_comment_list, name='user-comment-list'),
+    url(r'^user-comments/(?P<username>[A-Za-z0-9]+)/$', views.user_comment_list_by_name, name='user-comment-list'),
+    url(r'^latest-users/$', views.latest_comment_list, name='latest-comment-list'),
+
     #url(r'^articles/$', views.ArticleList.as_view(), name='articlelist'),
     #url(r'^articles/(?P<pk>[0-9]+)/$', views.ArticleDetail.as_view(), name='article-detail'),
     
